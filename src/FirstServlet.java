@@ -12,10 +12,12 @@ public class FirstServlet extends javax.servlet.http.HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+
         PrintWriter out = resp.getWriter();
 
         out.println("<html>");
-        out.println("<h1> Fuck You! </h1>");
+        out.println("<h1> Fuck You! " + name + " </h1>");
         out.println("</html>");
 
     }

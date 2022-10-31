@@ -12,17 +12,22 @@
     <title>Test Jsp</title>
 </head>
 <body>
-        <h1>Testing Jsp</h1>
-        <p>
-            <%  Date date = new Date();
-                String str = "Текущая дата" + date;
-            %>
+<% String name = request.getParameter("name");
+    if (name == null)
+        name = "";
+    else name = "for " + name; %>
+<h1>Testing Jsp <%=name%>
+</h1>
+<p>
+    <% Date date = new Date();
+        String str = "Текущая дата" + date;
+    %>
 
-            <%= date
-            %>
+    <%= date
+    %>
 
-            <% out.println(TestClass.getInfo());
-            %>
-        </p>
+    <% out.println(TestClass.getInfo());
+    %>
+</p>
 </body>
 </html>

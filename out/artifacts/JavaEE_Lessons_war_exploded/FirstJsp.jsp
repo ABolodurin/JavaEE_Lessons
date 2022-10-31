@@ -1,4 +1,5 @@
-<%--
+<%@ page import="java.util.Date" %>
+<%@ page import="logic.TestClass" %><%--
   Created by IntelliJ IDEA.
   User: Леночка
   Date: 30.10.2022
@@ -11,15 +12,22 @@
     <title>Test Jsp</title>
 </head>
 <body>
-        <h1>Testing Jsp</h1>
-        <p>
-            <% java.util.Date date = new java.util.Date();
-                String str = "Текущая дата" + date;
-            %>
-            <%=  date %>
+<% String name = request.getParameter("name");
+    if (name == null)
+        name = "";
+    else name = "for" + name; %>
+<h1>Testing Jsp <%=name%>
+</h1>
+<p>
+    <% Date date = new Date();
+        String str = "Текущая дата" + date;
+    %>
 
-            <% out.println("What the..");
-            %>
-        </p>
+    <%= date
+    %>
+
+    <% out.println(TestClass.getInfo());
+    %>
+</p>
 </body>
 </html>
