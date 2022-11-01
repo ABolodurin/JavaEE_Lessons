@@ -1,6 +1,10 @@
+import SessionUserData.Cart;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -12,13 +16,29 @@ public class FirstServlet extends javax.servlet.http.HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
+        HttpSession session = req.getSession();
 
-        PrintWriter out = resp.getWriter();
+        Cart cart = (Cart) session.getAttribute("cart");
 
-        out.println("<html>");
-        out.println("<h1> Fuck You! " + name + " </h1>");
-        out.println("</html>");
+        String name;
+        int quantity;
+        if (cart == null) {
+            cart = new Cart();
+            name = "пусто";
+            quantity = 0;
+        }
+        else {
+            name = req.getParameter("name");
+            quantity = Integer.parseInt(req.getParameter("quantity"));
+        }
+
+        cart.setName(name);
+        cart.setQuantity(quantity);
+
+        session.setAttribute("c", cart);
+
+        getServletContext().getRequestDispatcher("/CartReview.jsp").forward(req, resp);
+
 
     }
 }

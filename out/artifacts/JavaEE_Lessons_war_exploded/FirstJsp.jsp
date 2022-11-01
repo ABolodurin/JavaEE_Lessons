@@ -15,7 +15,7 @@
 <% String name = request.getParameter("name");
     if (name == null)
         name = "";
-    else name = "for" + name; %>
+    else name = "for " + name; %>
 <h1>Testing Jsp <%=name%>
 </h1>
 <p>
