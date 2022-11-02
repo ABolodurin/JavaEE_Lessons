@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.*;
 
 public class FirstServlet extends javax.servlet.http.HttpServlet {
     @Override
@@ -16,29 +17,26 @@ public class FirstServlet extends javax.servlet.http.HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
+        PrintWriter pw = resp.getWriter();
 
-        Cart cart = (Cart) session.getAttribute("cart");
-
-        String name;
-        int quantity;
-        if (cart == null) {
-            cart = new Cart();
-            name = "пусто";
-            quantity = 0;
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        else {
-            name = req.getParameter("name");
-            quantity = Integer.parseInt(req.getParameter("quantity"));
+        try {
+            Connection connection = DriverManager.getConnection(
+                    "jdbc:postgresql://localhost:5432/NorthWind",
+                    "admin", "admin");
+
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * from customers");
+            while(result.next())
+                pw.println(result.getString("*"));
+
+            statement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-
-        cart.setName(name);
-        cart.setQuantity(quantity);
-
-        session.setAttribute("c", cart);
-
-        getServletContext().getRequestDispatcher("/CartReview.jsp").forward(req, resp);
-
-
     }
 }
